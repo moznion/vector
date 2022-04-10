@@ -1,12 +1,15 @@
 use bitmask_enum::bitmask;
 use serde::{Deserialize, Serialize};
+use std::path::PathBuf;
 use std::{fmt, num::NonZeroUsize};
 
+pub mod format;
 mod global_options;
 mod id;
 mod log_schema;
 pub mod proxy;
 
+use format::FormatHint;
 pub use global_options::GlobalOptions;
 pub use id::ComponentKey;
 pub use log_schema::{init_log_schema, log_schema, LogSchema};
@@ -162,5 +165,29 @@ impl From<Option<bool>> for AcknowledgementsConfig {
 impl From<bool> for AcknowledgementsConfig {
     fn from(enabled: bool) -> Self {
         Some(enabled).into()
+    }
+}
+
+#[derive(Debug, Clone, Ord, PartialOrd, Eq, PartialEq)]
+pub enum ConfigPath {
+    File(PathBuf, FormatHint),
+    Dir(PathBuf),
+}
+
+impl<'a> From<&'a ConfigPath> for &'a PathBuf {
+    fn from(config_path: &'a ConfigPath) -> &'a PathBuf {
+        match config_path {
+            ConfigPath::File(path, _) => path,
+            ConfigPath::Dir(path) => path,
+        }
+    }
+}
+
+impl ConfigPath {
+    pub const fn as_dir(&self) -> Option<&PathBuf> {
+        match self {
+            Self::Dir(path) => Some(path),
+            _ => None,
+        }
     }
 }

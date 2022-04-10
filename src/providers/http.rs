@@ -124,8 +124,10 @@ async fn http_request_to_config_builder(
         .await
         .map_err(|e| vec![e.to_owned()])?;
 
-    let (config_builder, warnings) =
-        config::load(config_str.chunk(), crate::config::format::Format::Toml)?;
+    let (config_builder, warnings) = config::load(
+        config_str.chunk(),
+        vector_core::config::format::Format::Toml,
+    )?;
 
     for warning in warnings.into_iter() {
         warn!("{}", warning);

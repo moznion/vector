@@ -1,10 +1,10 @@
 use super::{component_name, open_file, read_dir, Format};
-use crate::config::format;
 use serde_toml_merge::merge_into_table;
 use std::path::{Path, PathBuf};
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 use toml::value::{Table, Value};
+use vector_core::config::format;
 
 /// Provides a hint to the loading system of the type of components that should be found
 /// when traversing an explicitly named directory.

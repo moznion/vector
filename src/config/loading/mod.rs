@@ -13,12 +13,12 @@ use std::{
 use config_builder::ConfigBuilderLoader;
 use loader::process::Process;
 
-use super::{
-    builder::ConfigBuilder, format, validation, vars, Config, ConfigPath, Format, FormatHint,
-};
+use super::{builder::ConfigBuilder, validation, vars, Config};
 use crate::signal;
 use glob::glob;
 use once_cell::sync::Lazy;
+use vector_core::config::format::{Format, FormatHint};
+use vector_core::config::{format, ConfigPath};
 
 pub use config_builder::*;
 pub use loader::*;

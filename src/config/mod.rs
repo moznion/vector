@@ -3,14 +3,15 @@ use std::{
     fmt::{self, Display, Formatter},
     hash::Hash,
     net::SocketAddr,
-    path::PathBuf,
 };
 
 use async_trait::async_trait;
 use component::ComponentDescription;
 use indexmap::IndexMap; // IndexMap preserves insertion order, allowing us to output errors in the same order they are present in the file
 use serde::{Deserialize, Serialize};
-pub use vector_core::config::{AcknowledgementsConfig, DataType, GlobalOptions, Input, Output};
+pub use vector_core::config::{
+    AcknowledgementsConfig, ConfigPath, DataType, GlobalOptions, Input, Output,
+};
 pub use vector_core::transform::{ExpandType, TransformConfig, TransformContext};
 
 use crate::{conditions, event::Metric, serde::OneOrMany};
@@ -23,7 +24,6 @@ pub mod component;
 mod diff;
 #[cfg(feature = "enterprise")]
 pub mod enterprise;
-pub mod format;
 mod graph;
 mod id;
 mod loading;
@@ -40,7 +40,6 @@ pub mod watcher;
 pub use builder::ConfigBuilder;
 pub use cmd::{cmd, Opts};
 pub use diff::ConfigDiff;
-pub use format::{Format, FormatHint};
 pub use id::{ComponentKey, OutputId};
 pub use loading::{
     load, load_builder_from_paths, load_from_paths, load_from_paths_with_provider, load_from_str,
@@ -51,6 +50,7 @@ pub use source::{SourceConfig, SourceContext, SourceDescription, SourceOuter};
 pub use transform::{TransformDescription, TransformOuter};
 pub use unit_test::{build_unit_tests, build_unit_tests_main, UnitTestResult};
 pub use validation::warnings;
+pub use vector_core::config::format::{Format, FormatHint};
 pub use vector_core::config::{log_schema, proxy::ProxyConfig, LogSchema};
 
 /// Loads Log Schema from configurations and sets global schema.
@@ -65,30 +65,6 @@ pub fn init_log_schema(config_paths: &[ConfigPath], deny_if_set: bool) -> Result
         },
         deny_if_set,
     )
-}
-
-#[derive(Debug, Clone, Ord, PartialOrd, Eq, PartialEq)]
-pub enum ConfigPath {
-    File(PathBuf, FormatHint),
-    Dir(PathBuf),
-}
-
-impl<'a> From<&'a ConfigPath> for &'a PathBuf {
-    fn from(config_path: &'a ConfigPath) -> &'a PathBuf {
-        match config_path {
-            ConfigPath::File(path, _) => path,
-            ConfigPath::Dir(path) => path,
-        }
-    }
-}
-
-impl ConfigPath {
-    pub const fn as_dir(&self) -> Option<&PathBuf> {
-        match self {
-            Self::Dir(path) => Some(path),
-            _ => None,
-        }
-    }
 }
 
 #[derive(Debug, Default)]
