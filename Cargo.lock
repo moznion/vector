@@ -465,6 +465,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "atomic-shim"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "67cd4b51d303cf3501c301e8125df442128d3c6d7c69f71b27833d253de47e77"
+dependencies = [
+ "crossbeam-utils 0.8.5",
+]
+
+[[package]]
 name = "atomic-waker"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -881,7 +890,7 @@ dependencies = [
  "db-key",
  "futures 0.3.17",
  "leveldb",
- "metrics",
+ "metrics 0.17.0",
  "metrics-exporter-prometheus",
  "pin-project 1.0.8",
  "pretty_assertions",
@@ -891,7 +900,7 @@ dependencies = [
  "tempdir",
  "tokio",
  "tokio-test",
- "tracing 0.1.26",
+ "tracing 0.1.33",
 ]
 
 [[package]]
@@ -1118,7 +1127,7 @@ dependencies = [
  "bytes 1.1.0",
  "serde_json",
  "tokio-util",
- "tracing 0.1.26",
+ "tracing 0.1.33",
 ]
 
 [[package]]
@@ -1479,7 +1488,7 @@ checksum = "22813a6dc45b335f9bade10bf7271dc477e81113e89eb251a0bc2a8a81c536e1"
 dependencies = [
  "bstr",
  "csv-core",
- "itoa",
+ "itoa 0.4.7",
  "ryu",
  "serde",
 ]
@@ -1663,7 +1672,7 @@ dependencies = [
  "snafu",
  "strum_macros 0.21.1",
  "thiserror",
- "tracing 0.1.26",
+ "tracing 0.1.33",
  "vrl-compiler",
 ]
 
@@ -2129,7 +2138,7 @@ dependencies = [
  "serde_json",
  "tempfile",
  "tokio",
- "tracing 0.1.26",
+ "tracing 0.1.33",
  "winapi 0.3.9",
 ]
 
@@ -2581,7 +2590,7 @@ dependencies = [
  "slab",
  "tokio",
  "tokio-util",
- "tracing 0.1.26",
+ "tracing 0.1.33",
 ]
 
 [[package]]
@@ -2829,7 +2838,7 @@ checksum = "527e8c9ac747e28542699a951517aa9a6945af506cd1f2e1b53a576c17b6cc11"
 dependencies = [
  "bytes 1.1.0",
  "fnv",
- "itoa",
+ "itoa 0.4.7",
 ]
 
 [[package]]
@@ -2913,12 +2922,12 @@ dependencies = [
  "http-body",
  "httparse",
  "httpdate",
- "itoa",
+ "itoa 0.4.7",
  "pin-project-lite",
  "socket2 0.4.1",
  "tokio",
  "tower-service",
- "tracing 0.1.26",
+ "tracing 0.1.33",
  "want",
 ]
 
@@ -3173,7 +3182,7 @@ dependencies = [
  "polling",
  "slab",
  "sluice",
- "tracing 0.1.26",
+ "tracing 0.1.33",
  "tracing-futures 0.2.5",
  "url",
  "waker-fn",
@@ -3193,6 +3202,12 @@ name = "itoa"
 version = "0.4.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dd25036021b0de88a0aff6b850051563c6516d0bf53f8638938edbb9de732736"
+
+[[package]]
+name = "itoa"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1aab8fc367588b89dcee83ab0fd66b72b50b72fa1904d7095045ace2b0c81c35"
 
 [[package]]
 name = "jobserver"
@@ -3246,7 +3261,7 @@ dependencies = [
  "reqwest",
  "serde_json",
  "tokio",
- "tracing 0.1.26",
+ "tracing 0.1.33",
 ]
 
 [[package]]
@@ -3530,7 +3545,7 @@ dependencies = [
  "serde",
  "serde_json",
  "snafu",
- "tracing 0.1.26",
+ "tracing 0.1.33",
 ]
 
 [[package]]
@@ -3592,15 +3607,6 @@ name = "match_cfg"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ffbee8634e0d45d258acb448e7eaab3fce7a0a467395d4d9f228e3c1f01fb2e4"
-
-[[package]]
-name = "matchers"
-version = "0.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f099785f7595cc4b4553a174ce30dd7589ef93391ff414dbb67f62392b9e0ce1"
-dependencies = [
- "regex-automata",
-]
 
 [[package]]
 name = "matches"
@@ -3673,8 +3679,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a00f42f354a2ed4894db863b3a4db47aef2d2e4435b937221749bd37a8a7aaa8"
 dependencies = [
  "ahash",
- "metrics-macros",
+ "metrics-macros 0.4.0",
  "proc-macro-hack",
+]
+
+[[package]]
+name = "metrics"
+version = "0.18.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2e52eb6380b6d2a10eb3434aec0885374490f5b82c8aaf5cd487a183c98be834"
+dependencies = [
+ "ahash",
+ "metrics-macros 0.5.1",
 ]
 
 [[package]]
@@ -3685,10 +3701,10 @@ checksum = "9db7052a7cb0b0c0922a1ce499c9e78576763b1d47499ba980a4fe731b96909d"
 dependencies = [
  "hyper",
  "ipnet",
- "metrics",
- "metrics-util",
+ "metrics 0.17.0",
+ "metrics-util 0.10.0",
  "parking_lot",
- "quanta",
+ "quanta 0.7.2",
  "thiserror",
  "tokio",
 ]
@@ -3708,19 +3724,30 @@ dependencies = [
 ]
 
 [[package]]
-name = "metrics-tracing-context"
-version = "0.8.0"
+name = "metrics-macros"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5ae4119c3866149edb3289413cdec4728420a0245f318457ec85029172c81d8b"
+checksum = "49e30813093f757be5cf21e50389a24dc7dbb22c49f23b7e8f51d69b508a5ffa"
 dependencies = [
- "itoa",
+ "proc-macro2 1.0.26",
+ "quote 1.0.9",
+ "syn 1.0.75",
+]
+
+[[package]]
+name = "metrics-tracing-context"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "487300885ada4d795d6517eaa13fbf15422241bd78ecb6a38760138b639941c1"
+dependencies = [
+ "itoa 1.0.1",
  "lockfree-object-pool",
- "metrics",
- "metrics-util",
+ "metrics 0.18.1",
+ "metrics-util 0.11.1",
  "once_cell",
- "tracing 0.1.26",
- "tracing-core 0.1.19",
- "tracing-subscriber",
+ "tracing 0.1.33",
+ "tracing-core 0.1.24",
+ "tracing-subscriber 0.3.11",
 ]
 
 [[package]]
@@ -3731,17 +3758,38 @@ checksum = "a58e622a425b7308e73e4390c68b8cb3df4443f2a57495e391b978412531638c"
 dependencies = [
  "ahash",
  "aho-corasick",
- "atomic-shim",
+ "atomic-shim 0.1.0",
  "crossbeam-epoch 0.9.3",
  "crossbeam-utils 0.8.5",
  "dashmap",
  "hashbrown 0.11.2",
  "indexmap",
- "metrics",
+ "metrics 0.17.0",
  "num_cpus",
  "ordered-float",
  "parking_lot",
- "quanta",
+ "quanta 0.7.2",
+ "radix_trie",
+ "sketches-ddsketch",
+]
+
+[[package]]
+name = "metrics-util"
+version = "0.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0296c9cffd3d72c61d8fcd25efc381fd589f7b155a81f2fa5670010430f60c57"
+dependencies = [
+ "aho-corasick",
+ "atomic-shim 0.2.0",
+ "crossbeam-epoch 0.9.3",
+ "crossbeam-utils 0.8.5",
+ "hashbrown 0.11.2",
+ "indexmap",
+ "metrics 0.18.1",
+ "num_cpus",
+ "ordered-float",
+ "parking_lot",
+ "quanta 0.9.3",
  "radix_trie",
  "sketches-ddsketch",
 ]
@@ -3959,7 +4007,7 @@ dependencies = [
  "base64-url",
  "crossbeam-channel 0.5.1",
  "fastrand",
- "itoa",
+ "itoa 0.4.7",
  "json",
  "libc",
  "log",
@@ -4155,7 +4203,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bafe4179722c2894288ee77a9f044f02811c86af699344c498b0840c698a2465"
 dependencies = [
  "arrayvec 0.4.12",
- "itoa",
+ "itoa 0.4.7",
  "num-bigint 0.2.6",
 ]
 
@@ -5041,12 +5089,28 @@ version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e76a3afdefd0ce2c0363bf3146271e947782240ea617885dd64e56c4de9fb3c9"
 dependencies = [
- "atomic-shim",
+ "atomic-shim 0.1.0",
  "ctor",
  "libc",
  "mach",
  "once_cell",
- "raw-cpuid",
+ "raw-cpuid 9.1.1",
+ "winapi 0.3.9",
+]
+
+[[package]]
+name = "quanta"
+version = "0.9.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "20afe714292d5e879d8b12740aa223c6a88f118af41870e8b6196e39a02238a8"
+dependencies = [
+ "crossbeam-utils 0.8.5",
+ "libc",
+ "mach",
+ "once_cell",
+ "raw-cpuid 10.3.0",
+ "wasi 0.10.0+wasi-snapshot-preview1",
+ "web-sys",
  "winapi 0.3.9",
 ]
 
@@ -5245,6 +5309,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "raw-cpuid"
+version = "10.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "738bc47119e3eeccc7e94c4a506901aea5e7b4944ecd0829cbebf4af04ceda12"
+dependencies = [
+ "bitflags",
+]
+
+[[package]]
 name = "rayon"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5324,7 +5397,7 @@ dependencies = [
  "dtoa",
  "futures 0.3.17",
  "futures-util",
- "itoa",
+ "itoa 0.4.7",
  "native-tls",
  "percent-encoding",
  "pin-project-lite",
@@ -5388,7 +5461,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ae1ded71d66a4a97f5e961fd0cb25a5f366a42a41570d16a763a69c092c26ae4"
 dependencies = [
  "byteorder",
- "regex-syntax",
 ]
 
 [[package]]
@@ -6050,7 +6122,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a7f9e390c27c3c0ce8bc5d725f6e4d30a29d26659494aa4b17535f7522c5c950"
 dependencies = [
  "indexmap",
- "itoa",
+ "itoa 0.4.7",
  "ryu",
  "serde",
 ]
@@ -6081,7 +6153,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9ec5d77e2d4c73717816afac02670d5c4f534ea95ed430442cad02e7a6e32c97"
 dependencies = [
  "dtoa",
- "itoa",
+ "itoa 0.4.7",
  "serde",
  "url",
 ]
@@ -6093,7 +6165,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "edfa57a7f8d9c1d260a549e7224100f6c43d43f9103e06dd8b4095a9b2b43ce9"
 dependencies = [
  "form_urlencoded",
- "itoa",
+ "itoa 0.4.7",
  "ryu",
  "serde",
 ]
@@ -6210,7 +6282,7 @@ dependencies = [
  "serde",
  "serde_json",
  "snafu",
- "tracing 0.1.26",
+ "tracing 0.1.33",
 ]
 
 [[package]]
@@ -7093,7 +7165,7 @@ dependencies = [
  "tower",
  "tower-layer",
  "tower-service",
- "tracing 0.1.26",
+ "tracing 0.1.33",
  "tracing-futures 0.2.5",
 ]
 
@@ -7126,7 +7198,7 @@ dependencies = [
  "tokio-util",
  "tower-layer",
  "tower-service",
- "tracing 0.1.26",
+ "tracing 0.1.33",
 ]
 
 [[package]]
@@ -7167,15 +7239,15 @@ dependencies = [
 
 [[package]]
 name = "tracing"
-version = "0.1.26"
+version = "0.1.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "09adeb8c97449311ccd28a427f96fb563e7fd31aabf994189879d9da2394b89d"
+checksum = "80b9fa4360528139bc96100c160b7ae879f5567f49f1782b0b02035b0358ebf3"
 dependencies = [
  "cfg-if 1.0.0",
  "log",
  "pin-project-lite",
- "tracing-attributes 0.1.15",
- "tracing-core 0.1.19",
+ "tracing-attributes 0.1.20",
+ "tracing-core 0.1.24",
 ]
 
 [[package]]
@@ -7190,9 +7262,9 @@ dependencies = [
 
 [[package]]
 name = "tracing-attributes"
-version = "0.1.15"
+version = "0.1.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c42e6fa53307c8a17e4ccd4dc81cf5ec38db9209f59b222210375b54ee40d1e2"
+checksum = "2e65ce065b4b5c53e73bb28912318cb8c9e9ad3921f1d669eb0e68b4c8143a2b"
 dependencies = [
  "proc-macro2 1.0.26",
  "quote 1.0.9",
@@ -7209,11 +7281,12 @@ dependencies = [
 
 [[package]]
 name = "tracing-core"
-version = "0.1.19"
+version = "0.1.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2ca517f43f0fb96e0c3072ed5c275fe5eece87e8cb52f4a77b69226d3b1c9df8"
+checksum = "90442985ee2f57c9e1b548ee72ae842f4a9a20e3f417cc38dbc5dc684d9bb4ee"
 dependencies = [
  "lazy_static",
+ "valuable",
 ]
 
 [[package]]
@@ -7225,7 +7298,7 @@ dependencies = [
  "futures 0.3.17",
  "futures-task",
  "pin-project 1.0.8",
- "tracing 0.1.26",
+ "tracing 0.1.33",
 ]
 
 [[package]]
@@ -7245,9 +7318,9 @@ dependencies = [
  "criterion",
  "dashmap",
  "mock_instant",
- "tracing 0.1.26",
- "tracing-core 0.1.19",
- "tracing-subscriber",
+ "tracing 0.1.33",
+ "tracing-core 0.1.24",
+ "tracing-subscriber 0.2.20",
 ]
 
 [[package]]
@@ -7258,7 +7331,7 @@ checksum = "a6923477a48e41c1951f1999ef8bb5a3023eb723ceadafe78ffb65dc366761e3"
 dependencies = [
  "lazy_static",
  "log",
- "tracing-core 0.1.19",
+ "tracing-core 0.1.24",
 ]
 
 [[package]]
@@ -7268,19 +7341,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "599f388ecb26b28d9c1b2e4437ae019a7b336018b45ed911458cd9ebf91129f6"
 dependencies = [
  "opentelemetry",
- "tracing 0.1.26",
- "tracing-core 0.1.19",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "tracing-serde"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fb65ea441fbb84f9f6748fd496cf7f63ec9af5bca94dd86456978d055e8eb28b"
-dependencies = [
- "serde",
- "tracing-core 0.1.19",
+ "tracing 0.1.33",
+ "tracing-core 0.1.24",
+ "tracing-subscriber 0.2.20",
 ]
 
 [[package]]
@@ -7289,20 +7352,18 @@ version = "0.2.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b9cbe87a2fa7e35900ce5de20220a582a9483a7063811defce79d7cbd59d4cfe"
 dependencies = [
- "ansi_term 0.12.1",
- "chrono",
- "lazy_static",
- "matchers",
- "regex",
- "serde",
- "serde_json",
  "sharded-slab",
- "smallvec",
  "thread_local",
- "tracing 0.1.26",
- "tracing-core 0.1.19",
- "tracing-log",
- "tracing-serde",
+ "tracing-core 0.1.24",
+]
+
+[[package]]
+name = "tracing-subscriber"
+version = "0.3.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4bc28f93baff38037f64e6f43d34cfa1605f27a49c34e8a04c5e78b0babf2596"
+dependencies = [
+ "tracing-core 0.1.24",
 ]
 
 [[package]]
@@ -7622,6 +7683,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "valuable"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "830b7e5d4d90034032940e4ace0d9a9a057e7a45cd94e6c007832e39edb82f6d"
+
+[[package]]
 name = "value-bag"
 version = "1.0.0-alpha.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7724,9 +7791,9 @@ dependencies = [
  "matches",
  "maxminddb",
  "md-5",
- "metrics",
+ "metrics 0.17.0",
  "metrics-tracing-context",
- "metrics-util",
+ "metrics-util 0.10.0",
  "mlua",
  "mongodb",
  "nix 0.22.1",
@@ -7805,13 +7872,13 @@ dependencies = [
  "tower",
  "tower-layer",
  "tower-test",
- "tracing 0.1.26",
- "tracing-core 0.1.19",
+ "tracing 0.1.33",
+ "tracing-core 0.1.24",
  "tracing-futures 0.2.5",
  "tracing-limit",
  "tracing-log",
  "tracing-opentelemetry",
- "tracing-subscriber",
+ "tracing-subscriber 0.2.20",
  "tracing-tower",
  "trust-dns-proto",
  "tui",
@@ -7877,9 +7944,9 @@ dependencies = [
  "indexmap",
  "lazy_static",
  "lookup",
- "metrics",
+ "metrics 0.17.0",
  "metrics-tracing-context",
- "metrics-util",
+ "metrics-util 0.10.0",
  "mlua",
  "no-proxy",
  "once_cell",
@@ -7902,10 +7969,10 @@ dependencies = [
  "tokio-test",
  "tokio-util",
  "toml",
- "tracing 0.1.26",
- "tracing-core 0.1.19",
+ "tracing 0.1.33",
+ "tracing-core 0.1.24",
  "tracing-log",
- "tracing-subscriber",
+ "tracing-subscriber 0.2.20",
  "twox-hash",
  "typetag",
  "vrl",
@@ -7982,7 +8049,7 @@ dependencies = [
  "serde",
  "shared",
  "thiserror",
- "tracing 0.1.26",
+ "tracing 0.1.33",
  "vrl-diagnostic",
  "vrl-parser",
 ]
@@ -8042,7 +8109,7 @@ dependencies = [
  "shared",
  "strip-ansi-escapes",
  "syslog_loose",
- "tracing 0.1.26",
+ "tracing 0.1.33",
  "uaparser",
  "url",
  "uuid",
@@ -8064,7 +8131,7 @@ dependencies = [
  "serde_json",
  "shared",
  "structopt",
- "tracing-subscriber",
+ "tracing-subscriber 0.2.20",
  "vrl",
  "vrl-parser",
  "vrl-stdlib",
@@ -8152,7 +8219,7 @@ dependencies = [
  "tokio-tungstenite",
  "tokio-util",
  "tower-service",
- "tracing 0.1.26",
+ "tracing 0.1.33",
 ]
 
 [[package]]
