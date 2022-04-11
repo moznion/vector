@@ -153,7 +153,17 @@ impl Application {
 
                 info!(message = "Log level is enabled.", level = ?level);
 
-                let config_paths = config::process_paths(&config_paths).ok_or(exitcode::CONFIG)?;
+                let config_paths = match config::collect_config_paths(
+                    &config::process_paths(&config_paths).ok_or(exitcode::CONFIG)?,
+                    Option::None,
+                    Option::None,
+                ) {
+                    Ok((config_paths, _)) => config_paths,
+                    Err(error) => {
+                        error!("Failed to include the configuration files. {:?}", error);
+                        return Err(exitcode::CONFIG);
+                    }
+                };
 
                 if watch_config {
                     // Start listening for config changes immediately.

@@ -1,3 +1,4 @@
+use std::path::PathBuf;
 use std::{
     collections::{HashMap, HashSet},
     fmt::{self, Display, Formatter},
@@ -7,7 +8,8 @@ use std::{
 
 use async_trait::async_trait;
 use component::ComponentDescription;
-use indexmap::IndexMap; // IndexMap preserves insertion order, allowing us to output errors in the same order they are present in the file
+use indexmap::IndexMap;
+// IndexMap preserves insertion order, allowing us to output errors in the same order they are present in the file
 use serde::{Deserialize, Serialize};
 pub use vector_core::config::{
     AcknowledgementsConfig, ConfigPath, DataType, GlobalOptions, Input, Output,
@@ -65,6 +67,65 @@ pub fn init_log_schema(config_paths: &[ConfigPath], deny_if_set: bool) -> Result
         },
         deny_if_set,
     )
+}
+
+pub fn collect_config_paths(
+    config_paths: &[ConfigPath],
+    maybe_collected_paths: Option<Vec<ConfigPath>>,
+    maybe_traversed_path_bufs: Option<HashSet<PathBuf>>,
+) -> Result<(Vec<ConfigPath>, HashSet<PathBuf>), Vec<String>> {
+    let mut traversed_path_bufs = maybe_traversed_path_bufs.unwrap_or_else(|| HashSet::new());
+    let mut collected_paths = maybe_collected_paths.unwrap_or_else(|| Vec::new());
+
+    collected_paths.extend_from_slice(config_paths);
+
+    let (builder, _) = load_builder_from_paths(config_paths)?;
+    for include_file_path in builder.global.include_files {
+        if traversed_path_bufs.contains(include_file_path.as_path()) {
+            // already traversed, skip it
+            continue;
+        }
+        traversed_path_bufs.insert(include_file_path.clone());
+
+        let config_paths = match glob::glob(include_file_path.to_str().unwrap_or("")) {
+            Ok(entries) => {
+                let mut paths = Vec::new();
+                for entry in entries {
+                    match entry {
+                        Ok(path) => {
+                            if path.is_file() {
+                                paths.push(ConfigPath::File(path, None))
+                            }
+                        }
+                        Err(error) => {
+                            error!("Failed to resolve the glob path for included config file");
+                            return Err(vec![error.to_string()]);
+                        }
+                    }
+                }
+                paths
+            }
+            Err(error) => {
+                error!("Failed to resolve the glob for included config file");
+                return Err(vec![error.msg.into()]);
+            }
+        };
+
+        let result = collect_config_paths(
+            &config_paths,
+            Option::Some(collected_paths),
+            Option::Some(traversed_path_bufs),
+        );
+        match result {
+            Ok((got_collected_paths, got_traversed_path_bufs)) => {
+                collected_paths = got_collected_paths;
+                traversed_path_bufs = got_traversed_path_bufs;
+            }
+            Err(error) => return Err(error),
+        }
+    }
+
+    Ok((collected_paths, traversed_path_bufs))
 }
 
 #[derive(Debug, Default)]

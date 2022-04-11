@@ -236,6 +236,10 @@ impl ConfigBuilder {
             errors.push("conflicting values for 'data_dir' found".to_owned());
         }
 
+        self.global
+            .include_files
+            .extend_from_slice(&with.global.include_files);
+
         // If the user has multiple config files, we must *merge* log schemas
         // until we meet a conflict, then we are allowed to error.
         if let Err(merge_errors) = self.global.log_schema.merge(&with.global.log_schema) {
