@@ -3051,9 +3051,9 @@ dependencies = [
 
 [[package]]
 name = "infer"
-version = "0.5.0"
+version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ea70330449622910e0edebab230734569516269fb32342fb0a8956340fa48c6c"
+checksum = "e035cede526e0b21d5adffc9fa0eb4ef5d6026fe9c5b0bfe8084b9472b587a55"
 
 [[package]]
 name = "inherent"
